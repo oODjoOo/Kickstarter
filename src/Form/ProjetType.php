@@ -22,7 +22,7 @@ class ProjetType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('statut')
-            ->add('user', EntityType::class, [
+            ->add('user_id', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',
             ])

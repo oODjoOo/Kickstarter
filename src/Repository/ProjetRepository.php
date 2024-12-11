@@ -15,6 +15,15 @@ class ProjetRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Projet::class);
     }
+    public function save(Projet $projet, bool $flush = false): void {
+
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($projet); 
+        
+        if ($flush) {
+            $entityManager->flush();
+        }
+    }
 
 //    /**
 //     * @return Projet[] Returns an array of Projet objects

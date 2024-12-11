@@ -1,13 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bienvenue sur notre liste de projet!{% endblock %}
+{% block title %}Bienvenue sur notre liste de projets !{% endblock %}
 
 {% block body %}
-    <h1>Voici les projets</h1>
-    <ul>
-    <li>
-        {{projet.titre}} {{projet.description}} {{projet.montantObjectif}}€ {{projet.montantActuel}}€ {{projet.dateLimite|date('d-m-Y H:i')}} {{projet.statut}}
-    </li>
-    </ul>
-    <a href="{{path('projet_index')}}">Retour à la liste des projets.</a>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Détails du Projet</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ projet.titre }}</h5>
+                        <p class="card-text">
+                            {{ projet.description }}
+                        </p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Objectif :</strong> {{ projet.montantObjectif }}€</li>
+                            <li class="list-group-item"><strong>Montant Actuel :</strong> {{ projet.montantActuel }}€</li>
+                            <li class="list-group-item"><strong>Date Limite :</strong> {{ projet.dateLimite|date('d-m-Y H:i') }}</li>
+                            <li class="list-group-item"><strong>Statut :</strong> {{ projet.statut }}</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{{ path('projet_index') }}" class="btn btn-primary">Retour à la liste des projets</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
