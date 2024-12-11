@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue sur notre liste de projets !{% endblock %}
+
+{% block body %}
+    <h1>Voici les projets</h1>
+    <ul>
+    {% for projet in projets %}
+        <li>
+            <a href="{{ path('projet_show', { 'titre': projet.titre }) }}">
+                {{ projet.titre }} - {{ projet.description }} - {{ projet.montantObjectif }}€ - {{ projet.montantActuel }}€ - {{ projet.dateLimite|date('d-m-Y H:i') }} - {{ projet.statut }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}
