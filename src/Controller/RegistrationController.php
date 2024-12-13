@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+
 class RegistrationController extends AbstractController
 {
     #[Route('/registration', name: 'app_registration')]
@@ -21,13 +22,13 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-        $hashedPassword = $userPasswordHasher->hashPassword($user, $form->get('password')->getData());
+        $hashedPassword = $userPasswordHasher->hashPassword($user, $form->get('mot_de_passe')->getData());
         $user->setMotDePasse($hashedPassword);
         $em->persist($user);
         $em->flush();
         }
         return $this->render('registration/index.html.twig', [
-            'controller_name' => 'RegistrationController',
+            'registrationForm' => $form->createView(),
         ]);
     }
 }

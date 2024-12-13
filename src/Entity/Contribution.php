@@ -57,24 +57,24 @@ class Contribution
         return $this;
     }
 
-    public function getUtilisateurId(): ?User
+    public function getUtilisateur(): ?User
     {
         return $this->utilisateur;
     }
 
-    public function setUtilisateurId(?User $utilisateur): static
+    public function setUtilisateur(?User $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
 
         return $this;
     }
 
-    public function getProjetId(): ?Projet
+    public function getProjet(): ?Projet
     {
         return $this->projet;
     }
 
-    public function setProjetId(?Projet $projet): static
+    public function setProjet(?Projet $projet): static
     {
         $this->projet = $projet;
 

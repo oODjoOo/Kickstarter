@@ -1,14 +1,17 @@
 <?php
 
+// src/Entity/User.php
 namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,13 +30,13 @@ class User
     /**
      * @var Collection<int, Projet>
      */
-    #[ORM\OneToMany(targetEntity: Projet::class, mappedBy: 'user_id')]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Projet::class)]
     private Collection $projets;
 
     /**
      * @var Collection<int, Contribution>
      */
-    #[ORM\OneToMany(targetEntity: Contribution::class, mappedBy: 'utilisateur_id')]
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: Contribution::class)]
     private Collection $contributions;
 
     public function __construct()
@@ -95,7 +98,7 @@ class User
     {
         if (!$this->projets->contains($projet)) {
             $this->projets->add($projet);
-            $projet->setUserId($this);
+            $projet->setUser($this);
         }
 
         return $this;
@@ -105,8 +108,8 @@ class User
     {
         if ($this->projets->removeElement($projet)) {
             // set the owning side to null (unless already changed)
-            if ($projet->getUserId() === $this) {
-                $projet->setUserId(null);
+            if ($projet->getUser() === $this) {
+                $projet->setUser(null);
             }
         }
 
@@ -125,7 +128,7 @@ class User
     {
         if (!$this->contributions->contains($contribution)) {
             $this->contributions->add($contribution);
-            $contribution->setUtilisateurId($this);
+            $contribution->setUtilisateur($this);
         }
 
         return $this;
@@ -135,11 +138,42 @@ class User
     {
         if ($this->contributions->removeElement($contribution)) {
             // set the owning side to null (unless already changed)
-            if ($contribution->getUtilisateurId() === $this) {
-                $contribution->setUtilisateurId(null);
+            if ($contribution->getUtilisateur() === $this) {
+                $contribution->setUtilisateur(null);
             }
         }
 
         return $this;
+    }
+
+    // Méthodes de l'interface UserInterface
+    public function getRoles(): array
+    {
+        return [$this->role];
+    }
+
+    public function getPassword(): string
+    {
+        return $this->mot_de_passe;
+    }
+
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials()
+    {
+        // Si vous stockez des informations sensibles dans l'objet User, effacez-les ici
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 }

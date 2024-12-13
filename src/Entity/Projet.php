@@ -1,8 +1,7 @@
 <?php
-
+// src/Entity/Projet.php
 namespace App\Entity;
 
-use App\Entity\User;
 use App\Repository\ProjetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -42,7 +41,7 @@ class Projet
     /**
      * @var Collection<int, Contribution>
      */
-    #[ORM\OneToMany(targetEntity: Contribution::class, mappedBy: 'projet_id')]
+    #[ORM\OneToMany(targetEntity: Contribution::class, mappedBy: 'projet')]
     private Collection $contributions;
 
     public function __construct()
@@ -127,12 +126,12 @@ class Projet
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUserId(?User $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
@@ -151,7 +150,7 @@ class Projet
     {
         if (!$this->contributions->contains($contribution)) {
             $this->contributions->add($contribution);
-            $contribution->setProjetId($this);
+            $contribution->setProjet($this);
         }
 
         return $this;
@@ -161,11 +160,12 @@ class Projet
     {
         if ($this->contributions->removeElement($contribution)) {
             // set the owning side to null (unless already changed)
-            if ($contribution->getProjetId() === $this) {
-                $contribution->setProjetId(null);
+            if ($contribution->getProjet() === $this) {
+                $contribution->setProjet(null);
             }
         }
 
         return $this;
     }
 }
+?>

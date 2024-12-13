@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Contribution;
 use App\Entity\Projet;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -9,21 +10,21 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProjetType extends AbstractType
+class ContributionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('titre')
-            ->add('description')
-            ->add('montant_objectif')
-            ->add('montant_actuel')
-            ->add('date_limite', null, [
+            ->add('montant')
+            ->add('date', null, [
                 'widget' => 'single_text',
             ])
-            ->add('statut')
-            ->add('user', EntityType::class, [
+            ->add('utilisateur', EntityType::class, [
                 'class' => User::class,
+                'choice_label' => 'id',
+            ])
+            ->add('projet', EntityType::class, [
+                'class' => Projet::class,
                 'choice_label' => 'id',
             ])
         ;
@@ -32,7 +33,7 @@ class ProjetType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Projet::class,
+            'data_class' => Contribution::class,
         ]);
     }
 }
