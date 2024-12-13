@@ -6,6 +6,7 @@ use App\Entity\Projet;
 // use App\Entity\Projet;
 use App\Form\ProjetType;
 use App\Repository\ProjetRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -44,6 +45,19 @@ class ProjetController extends AbstractController
         return $this->render('projet/ajouter.html.twig',[
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/projet/delete/{id}", name="projet_delete", methods={"POST"})
+     */
+    #[Route('/projet/delete/{id}', name: 'projet_delete', methods:['GET', 'POST'])]
+    public function delete(Projet $projet, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($projet);
+        $entityManager->flush();
+
+        // Redirigez vers la liste des projets ou une autre page après la suppression
+        return $this->redirectToRoute('projet_index');
     }
 
     // #[Route('/home', name: 'home_page', methods:['GET', 'POST'])]

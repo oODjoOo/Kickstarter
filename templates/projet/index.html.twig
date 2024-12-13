@@ -23,6 +23,9 @@
                                 <li><strong>Actuel : </strong>{{ projet.montantActuel }}€</li>
                                 <li><strong>Date limite : </strong>{{ projet.dateLimite|date('d-m-Y H:i') }}</li>
                                 <li><strong>Statut : </strong>{{ projet.statut }}</li>
+                                <form action="{{ path('projet_delete', { 'id': projet.id }) }}" method="post" style="display:inline;">
+                                    <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')">Supprimer</button>
+                                </form>
                             </ul>
                         </div>
                         <div class="card-footer">
